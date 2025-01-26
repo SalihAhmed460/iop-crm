@@ -11,4 +11,4 @@ A modern Customer Relationship Management (CRM) system built with Django and Tai
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/iop-crm.git
+   git clone https://github.com/SalihAhmed460/iop-crm.git
