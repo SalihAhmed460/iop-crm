@@ -1,0 +1,64 @@
+{% extends "core/base.html" %}
+
+{% block title %}Add Lead{% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-2xl font-bold mb-6">Add Lead</h1>
+    <!-- 
+    {{team.plan.max_leads }} - {{ team.leads.all|length }}
+-->
+    {% if team.plan.max_leads > team.leads.all|length %}
+        <form method="post" action=".">
+            {% csrf_token %}
+
+            <!-- Manually render form fields for better control -->
+            <div class="space-y-4">
+                <div>
+                    <label for="id_name" class="block text-sm font-medium text-gray-700">Name</label>
+                    {{ form.name }}
+                </div>
+                <div>
+                    <label for="id_email" class="block text-sm font-medium text-gray-700">Email</label>
+                    {{ form.email }}
+                </div>
+                <div>
+                    <label for="id_description" class="block text-sm font-medium text-gray-700">Description</label>
+                    {{ form.description }}
+                </div>
+                <div>
+                    <label for="id_priority" class="block text-sm font-medium text-gray-700">Priority</label>
+                    {{ form.priority }}
+                </div>
+                <div>
+                    <label for="id_status" class="block text-sm font-medium text-gray-700">Status</label>
+                    {{ form.status }}
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 space-x-4">
+                <button type="submit" class="py-2 px-6 bg-teal-500 text-white rounded-lg hover:bg-teal-600">
+                    Submit
+                </button>
+                <a href="{% url 'leads_list' %}" class="py-2 px-6 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    {% else %}
+    
+        <!-- Improved message with consistent styling -->
+        <div class="px-6 py-4 bg-red-500 rounded-lg shadow-md text-white flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <!-- Optional: Add an icon for visual appeal -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+                <span>You have has reached masimum number of the Leads, your owner must uprgade your plan!</span>
+            </div>
+
+    
+    {% endif %}
+</div>
+{% endblock %}

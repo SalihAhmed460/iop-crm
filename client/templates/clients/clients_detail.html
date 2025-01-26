@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block title %} {{ client.name }} {% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="mb-4 text-2xl font-bold">{{ client.name }}</h1>
+
+    <!-- Description -->
+    {% if client.description %}
+        <p class="font-semibold">Description</p>
+        <p class="mb-2">{{ client.description }}</p>
+    {% endif %}
+
+    <!-- Created At -->
+    <p class="font-semibold">Created At</p>
+    <p class="mb-2">{{ client.created_at | date:"M/d/Y H:i" }}</p>
+
+    <!-- Modified At -->
+    <p class="font-semibold">Modified At</p>
+    <p class="mb-6">{{ client.modified_at | date:"M/d/Y H:i" }}</p>
+
+    <hr class="my-4">
+
+    <!-- Action Buttons -->
+    <div class="flex space-x-4">
+        <!-- Edit Button -->
+        <a href="{% url 'clients:edit' client.id %}" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Edit
+        </a>
+
+        <!-- Delete Button -->
+        <form action="{% url 'clients:delete' client.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600" onclick="return confirm('Are you sure you want to delete this client?');">
+                Delete
+            </button>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Back to Clients -->
+    <a href="{% url 'clients:list' %}" class="py-2 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600">
+        Back to Clients
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block title %}Clients List{% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-2xl font-bold mb-4">Clients</h1>
+
+    <!-- Add Client Button -->
+    <div class="mb-6">
+        <a href="{% url 'clients:add' %}" class="py-2 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600">
+            Add Client
+        </a>
+    </div>
+
+    <!-- Table -->
+    {% if clients %}
+        <!-- Table Header -->
+        <div class="flex justify-between bg-gray-200">
+            <p class="py-4 px-2 font-semibold w-full">Name</p>
+            <p class="py-4 px-2 font-semibold w-full">Email</p>
+        </div>
+
+        <!-- Table Rows -->
+        {% for client in clients %}
+            <div class="flex justify-between {% cycle 'bg-gray-100' 'bg-white' %}">
+                <p class="py-2 px-2 w-full">
+                    <a href="{% url 'clients:detail' client.id %}" class="text-teal-500 hover:text-teal-700">{{ client.name }}</a>
+                </p>
+                <p class="py-2 px-2 w-full">{{ client.email }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <!-- Empty State -->
+        <div class="py-4 px-2 text-center text-gray-500">
+            No clients found.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="py-8 px-6">
+    <h1 class="text-2xl font-bold mb-8">Dashboard</h1>
+
+    <!-- Toggle Buttons for Sections -->
+    <div class="mb-6">
+        <button id="toggleLeads" class="bg-teal-500 text-white px-4 py-2 rounded-md mr-2 hover:bg-teal-600 transition-colors duration-300">
+            Toggle Leads
+        </button>
+        <button id="toggleClients" class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition-colors duration-300">
+            Toggle Clients
+        </button>
+    </div>
+
+    <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+        <!-- Leads Section -->
+        <div id="leadsSection" class="w-full md:w-1/2 px-6 py-8 bg-gray-50 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold mb-6">Newest Leads</h2>
+            {% if leads %}
+                {% for lead in leads %}
+                    <div class="mb-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="font-semibold text-gray-800">{{ lead.name }}</h3>
+                        <p class="text-xs text-gray-600 mt-1">Status: {{ lead.get_status_display }}</p>
+                        <p class="text-xs text-gray-600 mt-1">Priority: {{ lead.get_priority_display }}</p>
+                        <a href="{% url 'leads:detail' lead.pk %}" class="inline-block mt-2 text-teal-500 hover:text-teal-700 font-medium text-sm">View Details →</a>
+                        <button onclick="confirmDelete('{{ lead.name }}', '{% url 'leads:delete' lead.pk %}')" class="block mt-2 text-red-500 hover:text-red-700 font-medium text-sm">
+                            Delete Lead
+                        </button>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-500 text-sm">No leads found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Clients Section -->
+        <div id="clientsSection" class="w-full md:w-1/2 px-6 py-8 bg-gray-50 rounded-xl shadow-lg">
+            <h2 class="text-xl font-semibold mb-6">Newest Clients</h2>
+            {% if clients %}
+                {% for client in clients %}
+                    <div class="mb-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="font-semibold text-gray-800">{{ client.name }}</h3>
+                        <p class="text-xs text-gray-600 mt-1">Email: {{ client.email }}</p>
+                        <a href="{% url 'clients:detail' client.pk %}" class="inline-block mt-2 text-teal-500 hover:text-teal-700 font-medium text-sm">View Details →</a>
+                        <button onclick="confirmDelete('{{ client.name }}', '{% url 'clients:delete' client.pk %}')" class="block mt-2 text-red-500 hover:text-red-700 font-medium text-sm">
+                            Delete Client
+                        </button>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-500 text-sm">No clients found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    // Toggle Visibility of Sections
+    document.getElementById('toggleLeads').addEventListener('click', function() {
+        const leadsSection = document.getElementById('leadsSection');
+        leadsSection.style.display = leadsSection.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.getElementById('toggleClients').addEventListener('click', function() {
+        const clientsSection = document.getElementById('clientsSection');
+        clientsSection.style.display = clientsSection.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Confirm Before Deleting
+    function confirmDelete(name, deleteUrl) {
+        if (confirm(`Are you sure you want to delete ${name}?`)) {
+            window.location.href = deleteUrl; // Redirect to delete URL
+        }
+    }
+</script>
+{% endblock %}
